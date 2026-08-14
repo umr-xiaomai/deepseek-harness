@@ -93,7 +93,9 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "artifactName": "${productName}-${version}-setup.${ext}"
+      "artifactName": "${productName}-${version}-setup.${ext}",
+      "installerIcon": "installerIcon.ico",
+      "uninstallerIcon": "installerIcon.ico"
     },
     "linux": {
       "target": [
