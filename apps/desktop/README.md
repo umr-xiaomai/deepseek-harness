@@ -46,9 +46,9 @@ One-click launchers are also available:
 - Windows: double-click `scripts\build-desktop.cmd`, or run `scripts\build-desktop.cmd`
 - macOS/Linux: `./scripts/build-desktop.sh`
 
-By default the script installs the Electron runtime, builds the workspace and desktop shell, runs the desktop unit tests, then packages the host platform. Windows produces both the NSIS installer (`DeepSeek Harness-<version>-setup.exe`) and a portable executable (`DeepSeek Harness-<version>-portable.exe`); Linux produces an AppImage and deb; macOS produces a dmg and zip. Use `--skip-install-electron`, `--skip-build`, or `--skip-tests` to skip individual stages, and `--win`, `--linux`, or `--mac` to request specific targets.
+By default the script installs the Electron runtime, builds the workspace and desktop shell, runs the desktop unit tests, then packages the host platform. Windows produces both the NSIS installer (`DeepSeek Harness-<version>-setup.exe`) and a portable zip (`DeepSeek Harness-<version>-portable.zip`); Linux produces an AppImage and deb; macOS produces a dmg and zip. Use `--skip-install-electron`, `--skip-build`, or `--skip-tests` to skip individual stages, and `--win`, `--linux`, or `--mac` to request specific targets.
 
-Artifacts land in `apps/desktop/release/`. Cross-building is not attempted: build each target on its own platform (the script warns when a requested target differs from the host OS). The underlying `pnpm desktop:pack:*` scripts remain available.
+Artifacts land in `apps/desktop/release/`. Pushing a `v*`, `dsh-v*`, or `desktop-v*` tag publishes the installers and the portable zip as GitHub Release assets. Cross-building is not attempted: build each target on its own platform (the script warns when a requested target differs from the host OS). The underlying `pnpm desktop:pack:*` scripts remain available.
 
 ## How it works
 

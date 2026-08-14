@@ -46,9 +46,9 @@ python scripts/build-desktop.py --help    # 查看全部选项
 - Windows：双击 `scripts\build-desktop.cmd`，或执行 `scripts\build-desktop.cmd`
 - macOS/Linux：`./scripts/build-desktop.sh`
 
-默认流程会安装 Electron 运行时、构建仓库与桌面外壳、运行桌面单元测试，然后打包当前平台。Windows 同时生成 NSIS 安装包（`DeepSeek Harness-<version>-setup.exe`）与便携版可执行文件（`DeepSeek Harness-<version>-portable.exe`）；Linux 生成 AppImage 与 deb；macOS 生成 dmg 与 zip。使用 `--skip-install-electron`、`--skip-build` 或 `--skip-tests` 跳过相应阶段，使用 `--win`、`--linux` 或 `--mac` 指定目标平台。
+默认流程会安装 Electron 运行时、构建仓库与桌面外壳、运行桌面单元测试，然后打包当前平台。Windows 同时生成 NSIS 安装包（`DeepSeek Harness-<version>-setup.exe`）与便携版 zip（`DeepSeek Harness-<version>-portable.zip`）；Linux 生成 AppImage 与 deb；macOS 生成 dmg 与 zip。使用 `--skip-install-electron`、`--skip-build` 或 `--skip-tests` 跳过相应阶段，使用 `--win`、`--linux` 或 `--mac` 指定目标平台。
 
-产物位于 `apps/desktop/release/`。不做交叉构建：请在各自平台上构建对应目标（当请求的目标与当前系统不一致时，脚本会给出警告）。底层 `pnpm desktop:pack:*` 脚本仍然可用。
+产物位于 `apps/desktop/release/`。推送 `v*`、`dsh-v*` 或 `desktop-v*` 标签时，GitHub Actions 会将安装包与便携版 zip 作为 GitHub Release 附件发布。不做交叉构建：请在各自平台上构建对应目标（当请求的目标与当前系统不一致时，脚本会给出警告）。底层 `pnpm desktop:pack:*` 脚本仍然可用。
 
 ## 工作原理
 

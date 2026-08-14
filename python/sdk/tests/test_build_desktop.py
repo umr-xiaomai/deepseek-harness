@@ -45,7 +45,7 @@ def test_resolve_platforms_rejects_unknown_host() -> None:
 
 
 def test_electron_builder_args_pairs_platform_with_targets() -> None:
-    assert build_desktop.electron_builder_args("windows") == ["--win", "nsis", "portable"]
+    assert build_desktop.electron_builder_args("windows") == ["--win", "nsis", "zip"]
     assert build_desktop.electron_builder_args("linux") == ["--linux", "AppImage", "deb"]
     assert build_desktop.electron_builder_args("macos") == ["--mac", "dmg", "zip"]
 
@@ -85,7 +85,7 @@ def test_plan_runs_workspace_build_before_packaging() -> None:
                 "electron-builder",
                 "--win",
                 "nsis",
-                "portable",
+                "zip",
             ],
             "package windows",
         ),

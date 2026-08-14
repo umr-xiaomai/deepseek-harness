@@ -25,7 +25,7 @@ The launcher logic is Electron-free and lives in `src/launcher.ts`; `src/main.ts
 The window uses `contextIsolation: true`, `nodeIntegration: false`, and a preload that exports no privileged API. External URLs open in the system browser, and same-window navigation away from the loopback origin is blocked. The existing `/api` browser-trust fence still applies because the frontend talks to the loopback HTTP/WebSocket transport exactly as in `dsh web`.
 
 ### Packaging
-Electron Builder produces an NSIS installer on Windows, AppImage and deb on Linux, and dmg and zip on macOS. The desktop package depends on `@deepseek-ai/dsh`, so the installer bundles the CLI and the Web frontend dist through the existing dependency closure. `asar` is disabled and native rebuilds are skipped: the spawned CLI child must read its real `node_modules`. The runtime addon that inspects Node internals is unavailable under Electron, so the shell passes `--expose-internals` to the child instead of relying on the addon.
+Electron Builder produces an NSIS installer and a portable zip on Windows, AppImage and deb on Linux, and dmg and zip on macOS. The packaged icons use `assets/favicon.svg`. Pushing a `v*`, `dsh-v*`, or `desktop-v*` tag attaches those installers and the portable zip to the GitHub Release. The desktop package depends on `@deepseek-ai/dsh`, so the installer bundles the CLI and the Web frontend dist through the existing dependency closure. `asar` is disabled and native rebuilds are skipped: the spawned CLI child must read its real `node_modules`. The runtime addon that inspects Node internals is unavailable under Electron, so the shell passes `--expose-internals` to the child instead of relying on the addon.
 
 ## Alternatives considered
 

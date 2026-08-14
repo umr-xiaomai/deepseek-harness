@@ -57,6 +57,7 @@
   "build": {
     "appId": "ai.deepseek.dsh.desktop",
     "productName": "DeepSeek Harness",
+    "icon": "../../assets/favicon.svg",
     "asar": false,
     "npmRebuild": false,
     "directories": {
@@ -81,12 +82,13 @@
           ]
         },
         {
-          "target": "portable",
+          "target": "zip",
           "arch": [
             "x64"
           ]
         }
-      ]
+      ],
+      "artifactName": "${productName}-${version}-portable.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -111,9 +113,6 @@
       ],
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
-    },
-    "portable": {
-      "artifactName": "${productName}-${version}-portable.${ext}"
     }
   },
   "optionalDependencies": {

@@ -11,7 +11,7 @@ configuration into a one-command pipeline:
 * invoke electron-builder for the requested platforms.
 
 By default it builds only the host platform. Windows additionally produces a
-portable executable alongside the NSIS installer.
+portable zip archive alongside the NSIS installer.
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ RELEASE_DIR = DESKTOP_DIR / "release"
 # electron-builder targets are the declarative source of truth in
 # apps/desktop/package.json; keep these in sync with that file.
 TARGETS_BY_PLATFORM = {
-    "windows": ("nsis", "portable"),
+    "windows": ("nsis", "zip"),
     "linux": ("AppImage", "deb"),
     "macos": ("dmg", "zip"),
 }
@@ -135,7 +135,7 @@ def main() -> None:
     parser.add_argument(
         "--win",
         action="store_true",
-        help="build the Windows NSIS installer and portable executable",
+        help="build the Windows NSIS installer and portable zip",
     )
     parser.add_argument(
         "--linux",
