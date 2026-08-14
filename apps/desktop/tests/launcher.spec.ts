@@ -46,4 +46,8 @@ describe('resolveCliBin', () => {
     const resolver = (id: string): string => `/resolved/${id}`
     expect(resolveCliBin(resolver, {})).toBe('/resolved/@deepseek-ai/dsh/lib/bin.js')
   })
+
+  it('resolves the shipped CLI entry without evaluating its ESM module', () => {
+    expect(resolveCliBin()).toMatch(/[\\/]lib[\\/]bin\.js$/)
+  })
 })

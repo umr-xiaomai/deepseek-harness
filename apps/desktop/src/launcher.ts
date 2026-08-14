@@ -11,6 +11,7 @@ import { createRequire } from 'node:module'
  */
 
 const localRequire = createRequire(import.meta.url)
+const localResolve = localRequire.resolve.bind(localRequire)
 
 /** The readiness line printed once the Web server has bound its port. */
 const READY_URL_PATTERN = /^dsh web: (http:\/\/127\.0\.0\.1:\d+)/
@@ -61,17 +62,17 @@ export function parseReadyUrl(line: string): string | undefined {
 /**
  * Resolve the shipped CLI entry, honoring an explicit override for tests and
  * unusual deployments.
- * @param requireFrom - resolver rooted in this module's own package tree.
+ * @param resolveFrom - resolver rooted in this module's own package tree.
  * @param env - the process environment carrying the optional override.
  * @returns the absolute path to the CLI bin.
  */
 export function resolveCliBin(
-  requireFrom: (id: string) => string = localRequire,
+  resolveFrom: (id: string) => string = localResolve,
   env: NodeJS.ProcessEnv = process.env,
 ): string {
   const override = env.DSH_DESKTOP_CLI_BIN
   if (override !== undefined && override !== '') return override
-  return requireFrom('@deepseek-ai/dsh/lib/bin.js')
+  return resolveFrom('@deepseek-ai/dsh/lib/bin.js')
 }
 
 /**
@@ -93,7 +94,7 @@ export function webServerNodeArgs(): string[] {
  * @returns the child handle plus a promise for the loopback URL.
  */
 export function launchWebServer(options: WebServerOptions = {}, env: NodeJS.ProcessEnv = process.env): WebServerProcess {
-  const child = spawn(process.execPath, [...webServerNodeArgs(), resolveCliBin(localRequire, env), ...webServerArgs(options)], {
+  const child = spawn(process.execPath, [...webServerNodeArgs(), resolveCliBin(localResolve, env), ...webServerArgs(options)], {
     env: { ...env, ELECTRON_RUN_AS_NODE: '1' },
     stdio: ['ignore', 'pipe', 'pipe'],
     windowsHide: true,
