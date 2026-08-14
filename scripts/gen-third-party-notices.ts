@@ -75,7 +75,15 @@ const OVERRIDES: Record<string, { license?: string; repo?: string }> = {
   '@modelcontextprotocol/server-filesystem': { license: 'MIT / Apache-2.0', repo: 'https://github.com/modelcontextprotocol/servers' },
   // No repository field in the published manifest.
   'node-addon-require-builtin': { repo: 'https://www.npmjs.com/package/node-addon-require-builtin' },
-}
+  // Platform binary packages under @koromix/koffi are optionalDependencies of
+  // the desktop app; only the host platform is installed locally, so record
+  // their upstream MIT metadata for the third-party notice generator.
+  '@koromix/koffi-win32-x64': { license: 'MIT', repo: 'https://github.com/Koromix/koffi' },
+  '@koromix/koffi-win32-arm64': { license: 'MIT', repo: 'https://github.com/Koromix/koffi' },
+  '@koromix/koffi-darwin-arm64': { license: 'MIT', repo: 'https://github.com/Koromix/koffi' },
+  '@koromix/koffi-darwin-x64': { license: 'MIT', repo: 'https://github.com/Koromix/koffi' },
+  '@koromix/koffi-linux-arm64': { license: 'MIT', repo: 'https://github.com/Koromix/koffi' },
+  '@koromix/koffi-linux-x64': { license: 'MIT', repo: 'https://github.com/Koromix/koffi' } }
 
 /**
  * Python dependencies are few and named directly in `pyproject.toml` files
