@@ -12,6 +12,7 @@
   },
   "license": "MIT",
   "author": "DeepSeek AI",
+  "desktopName": "deepseek-harness",
   "type": "module",
   "main": "dist/main.js",
   "files": [
@@ -78,19 +79,28 @@
           "arch": [
             "x64"
           ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
         }
-      ],
-      "artifactName": "${productName}-${version}-setup.${ext}"
+      ]
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "${productName}-${version}-setup.${ext}"
     },
     "linux": {
       "target": [
         "AppImage",
         "deb"
       ],
+      "executableName": "deepseek-harness",
+      "maintainer": "DeepSeek AI <maintainers@deepseek.com>",
+      "syncDesktopName": true,
       "category": "Development",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
@@ -101,10 +111,12 @@
       ],
       "category": "public.app-category.developer-tools",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
     }
   },
   "optionalDependencies": {
-
     "@koromix/koffi-win32-x64": "3.1.1",
     "@koromix/koffi-win32-arm64": "3.1.1",
     "@koromix/koffi-darwin-arm64": "3.1.1",

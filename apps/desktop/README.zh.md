@@ -34,16 +34,21 @@ pnpm desktop:test
 
 ## 打包
 
-Electron Builder 从本包生成安装程序：
+仓库根目录的 Python 编排脚本 [`scripts/build-desktop.py`](../../scripts/build-desktop.py) 将 electron-builder 配置变成一条命令即可完成的流程。在仓库根目录执行：
 
 ```sh
-pnpm desktop:pack:win     # NSIS .exe
-pnpm desktop:pack:linux   # AppImage and .deb
-pnpm desktop:pack:mac     # .dmg and .zip
-pnpm desktop:pack         # host-platform targets
+python scripts/build-desktop.py           # 当前平台目标
+python scripts/build-desktop.py --help    # 查看全部选项
 ```
 
-产物位于 `apps/desktop/release/`。不做交叉构建：请分别在各自平台上构建对应目标。
+也提供一键启动脚本：
+
+- Windows：双击 `scripts\build-desktop.cmd`，或执行 `scripts\build-desktop.cmd`
+- macOS/Linux：`./scripts/build-desktop.sh`
+
+默认流程会安装 Electron 运行时、构建仓库与桌面外壳、运行桌面单元测试，然后打包当前平台。Windows 同时生成 NSIS 安装包（`DeepSeek Harness-<version>-setup.exe`）与便携版可执行文件（`DeepSeek Harness-<version>-portable.exe`）；Linux 生成 AppImage 与 deb；macOS 生成 dmg 与 zip。使用 `--skip-install-electron`、`--skip-build` 或 `--skip-tests` 跳过相应阶段，使用 `--win`、`--linux` 或 `--mac` 指定目标平台。
+
+产物位于 `apps/desktop/release/`。不做交叉构建：请在各自平台上构建对应目标（当请求的目标与当前系统不一致时，脚本会给出警告）。底层 `pnpm desktop:pack:*` 脚本仍然可用。
 
 ## 工作原理
 

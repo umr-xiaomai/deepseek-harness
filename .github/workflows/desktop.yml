@@ -1,6 +1,7 @@
 # Build the Electron desktop shell on its three host platforms and upload the
 # installers as workflow artifacts. Packaging is intentionally host-per-host:
-# each OS assembles its own NSIS, AppImage/deb, or dmg/zip output.
+# each OS assembles its own NSIS + portable exe, AppImage/deb, or dmg/zip
+# output through the Python packaging orchestrator.
 name: Desktop
 
 on:
@@ -78,6 +79,10 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Install (immutable)
         run: pnpm install --frozen-lockfile
 
@@ -91,7 +96,7 @@ jobs:
         run: pnpm desktop:test
 
       - name: Package desktop
-        run: pnpm desktop:pack
+        run: python scripts/build-desktop.py --skip-install-electron --skip-build --skip-tests
 
       - uses: actions/upload-artifact@v4
         with:
