@@ -1,0 +1,101 @@
+# Build the Electron desktop shell on its three host platforms and upload the
+# installers as workflow artifacts. Packaging is intentionally host-per-host:
+# each OS assembles its own NSIS, AppImage/deb, or dmg/zip output.
+name: Desktop
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/desktop.yml'
+      - 'apps/desktop/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+  pull_request:
+    paths:
+      - '.github/workflows/desktop.yml'
+      - 'apps/desktop/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PRIMARY_NODE_VERSION: '24'
+  # CI runs must never report to the production telemetry endpoint baked
+  # into apps/cli/cordis.yml (AppCLIEntry disables the row when set).
+  DSH_TELEMETRY_DISABLED: '1'
+  # Local desktop artifacts are unsigned; do not let electron-builder hunt for
+  # CI identities that are not configured in this repository.
+  CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+jobs:
+  desktop:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows
+            artifact: desktop-windows
+            paths: apps/desktop/release/*.exe
+          - os: ubuntu-latest
+            name: linux
+            artifact: desktop-linux
+            paths: |
+              apps/desktop/release/*.AppImage
+              apps/desktop/release/*.deb
+          - os: macos-latest
+            name: macos
+            artifact: desktop-macos
+            paths: |
+              apps/desktop/release/*.dmg
+              apps/desktop/release/*.zip
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@v4
+        with:
+          dest: ${{ runner.temp }}/setup-pnpm
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install (immutable)
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Electron runtime
+        run: pnpm install-electron
+
+      - name: Build workspace
+        run: pnpm run build
+
+      - name: Test desktop launcher
+        run: pnpm desktop:test
+
+      - name: Package desktop
+        run: pnpm desktop:pack
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.paths }}
+          if-no-files-found: error
+          retention-days: 7
