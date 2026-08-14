@@ -25,7 +25,7 @@ Electron 主进程以 `ELECTRON_RUN_AS_NODE=1` 外加 Node 的 `--expose-interna
 窗口使用 `contextIsolation: true`、`nodeIntegration: false`，且 preload 不导出任何特权 API。外部 URL 在系统浏览器中打开，离开回环源的同窗口导航被阻止。现有的 `/api` 浏览器信任围栏仍然适用，因为前端与回环 HTTP/WebSocket 传输通信的方式与 `dsh web` 完全相同。
 
 ### 打包
-Electron Builder 在 Windows 上生成 NSIS 安装程序与便携版 zip，在 Linux 上生成 AppImage 与 deb，在 macOS 上生成 dmg 与 zip。打包图标使用 `assets/favicon.svg`。推送 `v*`、`dsh-v*` 或 `desktop-v*` 标签时，这些安装包与便携版 zip 会作为 GitHub Release 附件发布。桌面包依赖 `@deepseek-ai/dsh`，因此安装程序通过现有依赖闭包捆绑 CLI 与 Web 前端 dist。禁用了 `asar` 并跳过原生重编译：被启动的 CLI 子进程需要读取真实的 `node_modules`。用于访问 Node 内部模块的运行时插件在 Electron 下不可用，因此外壳改为向子进程传递 `--expose-internals`，而不依赖该插件。
+Electron Builder 在 Windows 上生成 NSIS 安装程序与便携版 zip，在 Linux 上生成 AppImage 与 deb，在 macOS 上生成 dmg 与 zip。打包图标使用 `assets/icon2.png`；macOS 使用由该源生成的 512px `apps/desktop/build/icon.png`，因为 electron-builder 的 icns 转换要求至少 512px 输入。推送 `v*`、`dsh-v*` 或 `desktop-v*` 标签时，这些安装包与便携版 zip 会作为 GitHub Release 附件发布。桌面包依赖 `@deepseek-ai/dsh`，因此安装程序通过现有依赖闭包捆绑 CLI 与 Web 前端 dist。禁用了 `asar` 并跳过原生重编译：被启动的 CLI 子进程需要读取真实的 `node_modules`。用于访问 Node 内部模块的运行时插件在 Electron 下不可用，因此外壳改为向子进程传递 `--expose-internals`，而不依赖该插件。
 
 ## 曾考虑的替代方案
 

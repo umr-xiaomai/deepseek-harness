@@ -57,7 +57,7 @@
   "build": {
     "appId": "ai.deepseek.dsh.desktop",
     "productName": "DeepSeek Harness",
-    "icon": "../../assets/favicon.svg",
+    "icon": "../../assets/icon2.png",
     "asar": false,
     "npmRebuild": false,
     "directories": {
@@ -112,7 +112,8 @@
         "zip"
       ],
       "category": "public.app-category.developer-tools",
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "icon": "icon.png"
     }
   },
   "optionalDependencies": {
